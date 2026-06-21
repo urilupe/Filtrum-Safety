@@ -1,4 +1,4 @@
-# RAG Java — Retrieval local con exportación Markdown
+# Filtrum-Safety — Retrieval local con exportación Markdown
 
 Aplicación **Spring Boot** que implementa un pipeline RAG local:
 
