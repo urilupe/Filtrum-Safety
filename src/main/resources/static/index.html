@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Local — Contexto para LLM</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="header__brand">
+                <span class="header__logo">RAG</span>
+                <div>
+                    <h1>Filtering-Safety</h1>
+                    <p class="header__subtitle">Sube documentos, busca contexto y exporta Markdown para cualquier LLM</p>
+                </div>
+            </div>
+            <div class="header__stats" id="healthStats">
+                <span class="stat">Cargando…</span>
+            </div>
+        </header>
+
+        <main class="grid">
+            <section class="card">
+                <div class="card__header">
+                    <h2>Subir documentos</h2>
+                    <p>PDF, DOCX, TXT y más formatos soportados por Apache Tika</p>
+                </div>
+
+                <div class="dropzone" id="dropzone">
+                    <input type="file" id="fileInput" multiple hidden>
+                    <div class="dropzone__content">
+                        <p class="dropzone__title">Arrastra archivos aquí</p>
+                        <p class="dropzone__hint">o</p>
+                        <button type="button" class="btn btn--secondary" id="browseBtn">Seleccionar archivos</button>
+                    </div>
+                </div>
+
+                <ul class="file-list" id="selectedFiles"></ul>
+
+                <div class="actions">
+                    <button type="button" class="btn btn--primary" id="uploadBtn" disabled>Indexar documentos</button>
+                    <button type="button" class="btn btn--ghost" id="clearFilesBtn" disabled>Limpiar selección</button>
+                </div>
+
+                <div class="alert" id="uploadAlert" hidden></div>
+            </section>
+
+            <section class="card">
+                <div class="card__header">
+                    <h2>Documentos indexados</h2>
+                    <button type="button" class="btn btn--ghost btn--sm" id="refreshDocsBtn">Actualizar</button>
+                </div>
+                <div class="table-wrap">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Archivo</th>
+                                <th>Chunks</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="documentsBody">
+                            <tr><td colspan="3" class="empty">No hay documentos indexados</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card card--wide">
+                <div class="card__header">
+                    <h2>Consulta y exportación</h2>
+                    <p>Escribe lo que necesitas; el sistema buscará los fragmentos más relevantes por similitud coseno</p>
+                </div>
+
+                <label class="field">
+                    <span>Consulta del usuario</span>
+                    <textarea id="queryInput" rows="4" placeholder="Ej: Resume los requisitos técnicos del proyecto y las dependencias principales"></textarea>
+                </label>
+
+                <div class="params">
+                    <label class="field field--inline">
+                        <span>Top K</span>
+                        <input type="number" id="topKInput" min="1" max="50" value="5">
+                    </label>
+                    <label class="field field--inline">
+                        <span>Score mínimo</span>
+                        <input type="number" id="minScoreInput" min="0" max="1" step="0.01" value="0.55">
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="btn btn--secondary" id="searchBtn">Vista previa</button>
+                    <button type="button" class="btn btn--primary" id="exportBtn">Descargar Markdown</button>
+                </div>
+
+                <div class="alert" id="searchAlert" hidden></div>
+
+                <div class="results" id="resultsPanel" hidden>
+                    <h3>Fragmentos encontrados</h3>
+                    <div id="resultsList"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
